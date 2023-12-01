@@ -1,8 +1,9 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include <iostream>
-#include <fstream>
 #include "utility.hpp"
+#include "io_utility.hpp"
+#include "shader_utility.hpp"
+#include <iostream>
 
 
 const uint16_t SCR_WIDTH = 800;
@@ -12,9 +13,12 @@ float vertices[] = {
     -0.5f, -0.5f, 0.0f,
      0.5f, -0.5f, 0.0f,
      0.0f,  0.5f, 0.0f
-}; 
+};
 
-unsigned char* load_shader_C(const char* shader_file);
+
+GLuint create_vertex_shader(std::string filepath);
+GLuint create_frag_shader(std::string filepath);
+GLuint create_shader_program(GLint v_shader, GLint f_shader);
 
 int main(){
 
@@ -37,16 +41,20 @@ int main(){
     }
 
     print_tool_versions();
-    glad_glViewport; // set later
 
-    // c style boi
-    unsigned char* load = load_shader_C("shader/temp.frag");
-    int x = 0;
-    while(load[x] != '\0'){
-        printf("%c", load[x]);
-        x++;
-    } puts("");
+    std::string vert_filepath = "shader/temp.vert";
+    std::string frag_filepath = "shader/temp.frag";
 
+    GLint v_shader = create_vertex_shader(vert_filepath);
+    GLint f_shader = create_frag_shader(frag_filepath);
+    GLint link_shader = create_shader_program(v_shader, f_shader);
+
+    debug_shader_program(v_shader, GL_COMPILE_STATUS);
+    debug_shader_program(f_shader, GL_COMPILE_STATUS);
+    debug_shader_program(link_shader, GL_LINK_STATUS);
+
+
+    // Render loop
     while(!glfwWindowShouldClose(window)){
         glClearColor(0.2f, .25, .4, 1.);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -60,30 +68,89 @@ int main(){
 
 }
 
-unsigned char* load_shader_C(const char* shader_file){
+GLuint create_vertex_shader(std::string filepath){
 
-    // C style (extra)
-    FILE* file = fopen(shader_file, "r");
-    fseek(file, 0, SEEK_END);
-    size_t file_size = ftell(file);
-    fseek(file, 0, SEEK_SET);
-    std::cout << "file size: " << file_size << std::endl; // 103
+    std::string vert_filepath = filepath;
+    std::string v_file_data;
 
-    unsigned char *buffer = nullptr;
-    buffer = (unsigned char*)malloc(file_size);
-    size_t fsize = fread(buffer, sizeof(unsigned char), file_size, file);
-    std::cout << "file size: " << fsize << std::endl; // 96
-    buffer[fsize] = '\0';
-    fclose(file);
+    // Load and print shader file
+    load_shader(vert_filepath);
+    v_file_data = load_shader(vert_filepath);
+    const GLchar* v_shader = v_file_data.c_str();
+    std::cout << v_file_data << std::endl;
 
-    return buffer;
+    GLint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &v_shader, NULL);
+    glCompileShader(vertexShader);
+    debug_shader_program(vertexShader, GL_COMPILE_STATUS);
+
+    return vertexShader;
 }
 
-std::string load_shader(std::string& shader_file){
-    
-    std::ifstream cs(shader_file);
-    std::string c;
-    
-    return c;
+GLuint create_frag_shader(std::string filepath){
 
+    std::string frag_filepath = filepath;
+    std::string f_file_data;
+
+    // Load and print shader file
+    load_shader(frag_filepath);
+    f_file_data = load_shader(frag_filepath);
+    const GLchar* f_shader = f_file_data.c_str();
+    std::cout << f_file_data << std::endl;
+
+    GLint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragShader, 1, &f_shader, NULL);
+    glCompileShader(fragShader);
+    debug_shader_program(fragShader, GL_COMPILE_STATUS);
+
+    return fragShader;
 }
+
+GLuint create_shader_program(GLint v_shader, GLint f_shader){
+
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, v_shader);
+    glAttachShader(shaderProgram, f_shader);
+    glLinkProgram(shaderProgram);
+    glUseProgram(shaderProgram);
+    debug_shader_program(shaderProgram, GL_LINK_STATUS);
+
+    return shaderProgram;
+}
+
+
+/* Previous raw setup */
+    // std::string v_file_data;
+    // std::string f_file_data;
+
+    // // Load and print shader file
+    // load_shader(vert_filepath);
+    // v_file_data = load_shader(vert_filepath);
+    // const GLchar* v_shader = v_file_data.c_str();
+    // std::cout << v_file_data << std::endl;
+
+    // // Load and print shader file
+    // load_shader(frag_filepath);
+    // f_file_data = load_shader(frag_filepath);
+    // const GLchar* f_shader = f_file_data.c_str();
+    // std::cout << f_file_data << std::endl;
+
+    // // set later
+    // glad_glViewport;
+
+    // GLint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    // glShaderSource(vertexShader, 1, &v_shader, NULL);
+    // glCompileShader(vertexShader);
+    // debug_shader_program(vertexShader, GL_COMPILE_STATUS);
+
+    // GLint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+    // glShaderSource(fragShader, 1, &f_shader, NULL);
+    // glCompileShader(fragShader);
+    // debug_shader_program(fragShader, GL_COMPILE_STATUS);
+
+    // GLuint shaderProgram = glCreateProgram();
+    // glAttachShader(shaderProgram, vertexShader);
+    // glAttachShader(shaderProgram, fragShader);
+    // glLinkProgram(shaderProgram);
+    // glUseProgram(shaderProgram);
+    // debug_shader_program(shaderProgram, GL_LINK_STATUS);
