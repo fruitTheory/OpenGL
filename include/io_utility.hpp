@@ -1,12 +1,14 @@
+#pragma once
+
 #include <iostream>
 #include <fstream>
 
 
 // Returns string of char from specificed file
-std::string load_shader(std::string& shader_file){
+std::string load_file(std::string& file_path){
 
     std::ifstream fs;
-    fs.open(shader_file, std::iostream::in);
+    fs.open(file_path, std::iostream::in);
     char c;
     std::string s;
     while((c = fs.get()) != EOF){ 
@@ -23,10 +25,10 @@ void print_file_data_C(unsigned char* file_data){
 }
 
 // Returns characters from specified file
-unsigned char* load_shader_C(const char* shader_file){
+unsigned char* load_file_C(const char* file_path){
 
     // C style (extra)
-    FILE* file = fopen(shader_file, "r");
+    FILE* file = fopen(file_path, "r");
     fseek(file, 0, SEEK_END);
     size_t file_size = ftell(file);
     fseek(file, 0, SEEK_SET);
@@ -42,6 +44,6 @@ unsigned char* load_shader_C(const char* shader_file){
     return buffer;
 
     // load c style - extra
-    // unsigned char* load = load_shader_C("shader/temp.frag");
+    // unsigned char* load = load_file_C("shader/temp.frag");
     // print_file_data_C(load);
 }

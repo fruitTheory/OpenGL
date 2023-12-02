@@ -1,7 +1,10 @@
+#pragma once
+
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include <iostream>
 
+// Print versions of tools related openGL 
 void print_tool_versions(){
     // Output OpenGL version
     const GLubyte* version = glGetString(GL_VERSION);
