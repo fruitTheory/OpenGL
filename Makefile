@@ -1,6 +1,6 @@
 INCLUDES ?= -I ./include/ \
 -I C:/Programs/glfw/include/ \
-#-I C:/Programs/glad/include/
+-I C:/Programs/glad/include/
 BUILD = ./build/
 SOURCES = ./src/
 BINARIES = ./bin/
@@ -24,7 +24,8 @@ ${BUILD}%.o:${SOURCES}%.cpp
 	${CC} ${FLAGS} ${INCLUDES} -c $< -o $@
 
 # Special rule for glad.c
-${BUILD}glad.o: ${SOURCES}glad.c
+GLAD_SRC = C:/Programs/glad/src/
+${BUILD}glad.o: ${GLAD_SRC}glad.c
 	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 .PHONY: clean run

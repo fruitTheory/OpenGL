@@ -42,8 +42,4 @@ unsigned char* load_file_C(const char* file_path){
     fclose(file);
 
     return buffer;
-
-    // load c style - extra
-    // unsigned char* load = load_file_C("shader/temp.frag");
-    // print_file_data_C(load);
 }
