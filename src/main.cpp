@@ -6,30 +6,24 @@
 #include "shader_utility.hpp"
 #include "shader.hpp"
 #include "config.hpp"
+#include "window_utility.hpp"
 
 
 int main(){
 
+    // Initialize glfw and create a window
+    handle_glfw_init();
     GLFWwindow* window;
+    window = create_window(SCRN_WIDTH, SCRN_HEIGHT, "My Window", NULL, NULL);
+    glfwMakeContextCurrent(window); // Context - pass data/info to
 
-    // Init glfw
-    if(!glfwInit()){std::cerr << "Failed to initialize GLFW" << std::endl; return -1;};
+    // Initalize glad
+    handle_glad_init();
 
-    // Create window
-    window = glfwCreateWindow(SCRN_WIDTH, SCRN_HEIGHT, "My Window", NULL, NULL);
-    if(!window){std::cerr << "Window didn't initialize" << std::endl; glfwTerminate(); return -1;}
-
-    // Context - pass data/info to
-    glfwMakeContextCurrent(window);
-
-    // Init glad
-    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-
+    // Utility
     print_tool_versions();
 
+    // Shader filepaths
     std::string vert_filepath = "shader/temp.vert";
     std::string frag_filepath = "shader/temp.frag";
 
@@ -37,9 +31,8 @@ int main(){
     GLint v_shader = create_vertex_shader(vert_filepath);
     GLint f_shader = create_frag_shader(frag_filepath);
     GLint linked_shader = create_shader_program(v_shader, f_shader);
-    debug_shader_program(v_shader, GL_COMPILE_STATUS);
-    debug_shader_program(f_shader, GL_COMPILE_STATUS);
-    debug_shader_program(linked_shader, GL_LINK_STATUS);
+    glDeleteShader(v_shader); glDeleteShader(f_shader);
+
 
     // Render loop
     while(!glfwWindowShouldClose(window)){

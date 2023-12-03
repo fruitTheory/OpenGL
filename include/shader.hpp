@@ -14,15 +14,15 @@ GLuint create_vertex_shader(std::string filepath){
     // Load and print shader file
     load_file(vert_filepath);
     v_file_data = load_file(vert_filepath);
-    const GLchar* v_shader = v_file_data.c_str();
+    const GLchar *vert_file_data = v_file_data.c_str();
     // std::cout << v_file_data << std::endl;
 
-    GLint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &v_shader, NULL);
-    glCompileShader(vertexShader);
-    debug_shader_program(vertexShader, GL_COMPILE_STATUS);
+    GLint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertex_shader, 1, &vert_file_data, NULL);
+    glCompileShader(vertex_shader);
+    debug_shader_program(vertex_shader, GL_COMPILE_STATUS);
 
-    return vertexShader;
+    return vertex_shader;
 }
 
 GLuint create_frag_shader(std::string filepath){
@@ -33,26 +33,25 @@ GLuint create_frag_shader(std::string filepath){
     // Load and print shader file
     load_file(frag_filepath);
     f_file_data = load_file(frag_filepath);
-    const GLchar* f_shader = f_file_data.c_str();
+    const GLchar *frag_file_data = f_file_data.c_str();
     // std::cout << f_file_data << std::endl;
 
-    GLint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragShader, 1, &f_shader, NULL);
-    glCompileShader(fragShader);
-    debug_shader_program(fragShader, GL_COMPILE_STATUS);
+    GLint frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(frag_shader, 1, &frag_file_data, NULL);
+    glCompileShader(frag_shader);
+    debug_shader_program(frag_shader, GL_COMPILE_STATUS);
 
-    return fragShader;
+    return frag_shader;
 }
 
 // take id of a vert and frag shader
 GLuint create_shader_program(GLint v_shader, GLint f_shader){
 
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, v_shader);
-    glAttachShader(shaderProgram, f_shader);
-    glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
-    debug_shader_program(shaderProgram, GL_LINK_STATUS);
+    GLuint shader_program = glCreateProgram();
+    glAttachShader(shader_program, v_shader);
+    glAttachShader(shader_program, f_shader);
+    glLinkProgram(shader_program);
+    debug_shader_program(shader_program, GL_LINK_STATUS);
 
-    return shaderProgram;
+    return shader_program;
 }
