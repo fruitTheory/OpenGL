@@ -14,7 +14,7 @@ int main(){
     // Initialize glfw and create a window
     handle_glfw_init();
     GLFWwindow* window;
-    window = create_window(SCRN_WIDTH, SCRN_HEIGHT, "My Window", NULL, NULL);
+    window = create_window(SCRN_WIDTH, SCRN_HEIGHT, WINDOW_NAME, NULL, NULL);
     glfwMakeContextCurrent(window); // Context - pass data/info to
 
     // Initalize glad
@@ -33,16 +33,38 @@ int main(){
     GLint linked_shader = create_shader_program(v_shader, f_shader);
     glDeleteShader(v_shader); glDeleteShader(f_shader);
 
+    GLuint VAO, VBO;
+
+    // Generate and store IDs, bind to make current for proceeding data  
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+
+    // How should gl interpret vertex data
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float)*3), nullptr);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
     // Render loop
     while(!glfwWindowShouldClose(window)){
         glClearColor(0.2f, .25, .4, 1.);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glUseProgram(linked_shader);
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     exit:
+    glDeleteVertexArrays(1, &VAO); glDeleteBuffers(1, &VBO);
     glfwTerminate();
     return 0;
 
