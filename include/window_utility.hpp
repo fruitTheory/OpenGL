@@ -3,7 +3,6 @@
 #include "GLFW/glfw3.h"
 #include <iostream>
 
-
 // Handle glfw init and/or failure
 void handle_glfw_init(){
     if(!glfwInit()){

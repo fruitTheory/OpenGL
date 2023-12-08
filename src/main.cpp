@@ -20,7 +20,6 @@ int main(){
     // Initalize glad
     handle_glad_init();
 
-    // Utility
     print_tool_versions();
 
     // Shader filepaths
@@ -33,31 +32,53 @@ int main(){
     GLint linked_shader = create_shader_program(v_shader, f_shader);
     glDeleteShader(v_shader); glDeleteShader(f_shader);
 
-    GLuint VAO, VBO;
+    // Buffers - VBO stores verticies in gpu memory 
+    GLuint VAO, VBO, EBO;
 
-    // Generate and store IDs, bind to make current for proceeding data  
+    // Generate and store IDs, bind to current context and set state of object  
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
 
+    // VAO object (bind)
     glBindVertexArray(VAO);
+
+    // VBO object
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+
+    // EBO object
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
 
     // How should gl interpret vertex data
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float)*3), nullptr);
     glEnableVertexAttribArray(0);
 
+    // Unbind objects
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
     // Render loop
     while(!glfwWindowShouldClose(window)){
+        // shader program to use
+        glUseProgram(linked_shader);
+
+        // bg color 
         glClearColor(0.2f, .25, .4, 1.);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(linked_shader);
+        // change state of how polygons are rasterized
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        
+        // rebind objects
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+        // drawing
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // does nothing
+        glDrawArrays(GL_TRIANGLES, 0, 6); // draws rectangle
 
         glfwSwapBuffers(window);
         glfwPollEvents();
