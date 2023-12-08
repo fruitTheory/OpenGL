@@ -4,7 +4,7 @@
 #include "GLFW/glfw3.h"
 #include <iostream>
 #include "shader_utility.hpp"
-#include "io_utility.hpp"
+#include "file_utility.hpp"
 
 GLuint create_vertex_shader(std::string filepath){
 

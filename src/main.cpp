@@ -2,11 +2,11 @@
 #include "GLFW/glfw3.h"
 #include <iostream>
 #include "utility.hpp"
-#include "io_utility.hpp"
+#include "file_utility.hpp"
 #include "shader_utility.hpp"
-#include "shader.hpp"
+#include "shader_create.hpp"
 #include "config.hpp"
-#include "window_utility.hpp"
+#include "window.hpp"
 
 
 int main(){
