@@ -2,8 +2,8 @@
 
 #include <stdint.h>
 
-const uint16_t SCRN_WIDTH = 800;
-const uint16_t SCRN_HEIGHT = 600;
+int SCRN_WIDTH = 1000;
+int SCRN_HEIGHT = 800;
 const char *WINDOW_NAME = "OpenGL Window";
 
 // float vertices[] = {

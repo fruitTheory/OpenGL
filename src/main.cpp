@@ -7,6 +7,10 @@
 #include "shader_create.hpp"
 #include "config.hpp"
 #include "window.hpp"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_utility.hpp"
 
 
 int main(){
@@ -21,6 +25,9 @@ int main(){
     handle_glad_init();
 
     print_tool_versions();
+
+    // Initalize imgui
+    handgle_imgui_init(window);
 
     // Shader filepaths
     std::string vert_filepath = "shader/temp.vert";
@@ -79,6 +86,10 @@ int main(){
         // drawing
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // does nothing
         glDrawArrays(GL_TRIANGLES, 0, 6); // draws rectangle
+
+        // Imgui
+        imgui_create_frame();
+        imgui_render_frame();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

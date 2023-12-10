@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "C:/Programs/glfw/include",
-                "C:/Programs/glad/include/"
+                "C:/Programs/glad/include/",
+                "${workspaceFolder}/imgui/"
             ],
             "defines": [
                 "_DEBUG",
