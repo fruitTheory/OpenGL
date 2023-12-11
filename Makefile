@@ -8,7 +8,7 @@ BINARIES = ./bin/
 FLAGS = -g -Wall -Wextra -fdiagnostics-color=always #-fsanitize=address -O3
 CC = g++
 OBJECTS = ${BUILD}glad.o ${BUILD}imgui.o ${BUILD}imgui_draw.o \
-${BUILD}imgui_widgets.o ${BUILD}imgui_tables.o ${BUILD}imgui_demo.o \
+${BUILD}imgui_widgets.o ${BUILD}imgui_tables.o \
 ${BUILD}imgui_impl_glfw.o ${BUILD}imgui_impl_opengl3.o
 LIBRARY_DIR ?=	-L C:/Programs/glfw/lib-mingw-w64 \
 -L "C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x64"

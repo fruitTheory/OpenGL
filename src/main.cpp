@@ -1,16 +1,10 @@
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include <iostream>
-#include "utility.hpp"
+#include "debug_utility.hpp"
+#include "glad_utility.hpp"
 #include "file_utility.hpp"
-#include "shader_utility.hpp"
-#include "shader_create.hpp"
+#include "shader.hpp"
 #include "config.hpp"
+#include "data.hpp"
 #include "window.hpp"
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include "imgui_utility.hpp"
 
 
 int main(){
@@ -26,8 +20,10 @@ int main(){
 
     print_tool_versions();
 
+    #ifdef IMGUI_TRUE
     // Initalize imgui
     handgle_imgui_init(window);
+    #endif
 
     // Shader filepaths
     std::string vert_filepath = "shader/temp.vert";
@@ -58,7 +54,7 @@ int main(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
 
-    // How should gl interpret vertex data
+    // How should gl interpret vertex data, type, stride, etc
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float)*3), nullptr);
     glEnableVertexAttribArray(0);
 
@@ -81,15 +77,17 @@ int main(){
         
         // rebind objects
         glBindVertexArray(VAO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO); // not used yet
 
         // drawing
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // does nothing
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // not used yet
         glDrawArrays(GL_TRIANGLES, 0, 6); // draws rectangle
 
+        #ifdef IMGUI_TRUE
         // Imgui
         imgui_create_frame();
         imgui_render_frame();
+        #endif
 
         glfwSwapBuffers(window);
         glfwPollEvents();

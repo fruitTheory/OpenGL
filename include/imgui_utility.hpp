@@ -4,6 +4,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#define IMGUI_TRUE
 
 void handgle_imgui_init(GLFWwindow *window){
     IMGUI_CHECKVERSION();
