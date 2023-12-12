@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "file_utility.hpp"
 #include <iostream>
+#include <cmath>
 
 // For pname use GL_COMPILE_STATUS or GL_LINK_STATUS 
 int debug_shader_program(GLuint program, int pname){
@@ -16,16 +17,14 @@ int debug_shader_program(GLuint program, int pname){
                 glGetProgramInfoLog(program, 512, NULL, infoLog);
                 std::cout << "ERROR::SHADER::LINKING_FAILED\n" << infoLog << std::endl;
                 return EXIT_FAILURE;
-            } break;
-        }
+            } break; }
         case GL_COMPILE_STATUS:{
             glGetShaderiv(program, GL_COMPILE_STATUS, &success);
             if(success == GL_FALSE){
                 glGetShaderInfoLog(program, 512, NULL, infoLog);
                 std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
                 return EXIT_FAILURE;
-            } break;
-        }
+            } break; }
         default:
             break;
     }
@@ -80,4 +79,13 @@ GLuint create_shader_program(GLint v_shader, GLint f_shader){
     debug_shader_program(shader_program, GL_LINK_STATUS);
 
     return shader_program;
+}
+
+// Temporary time varies color for explicit uniform variable
+void time_vary_color(GLint shader_program){
+        int uniform_var_loc = glGetUniformLocation(shader_program, "uniColor");
+        // Time to color via uniform
+        float time = glfwGetTime();
+        float green = (sin(time) / 2.0f) + 0.5f;
+        glUniform4f(uniform_var_loc, 0.0f, green, 0.0f, 1.0f);
 }

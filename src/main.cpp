@@ -32,7 +32,7 @@ int main(){
     // Create and debug shader programs
     GLint v_shader = create_vertex_shader(vert_filepath);
     GLint f_shader = create_frag_shader(frag_filepath);
-    GLint linked_shader = create_shader_program(v_shader, f_shader);
+    GLint shader_program = create_shader_program(v_shader, f_shader);
     glDeleteShader(v_shader); glDeleteShader(f_shader);
 
     // Buffers - VBO stores verticies in gpu memory 
@@ -62,7 +62,6 @@ int main(){
     glEnableVertexAttribArray(0);
     // End
 
-
     // // VAO object (bind)
     // glBindVertexArray(VAO);
 
@@ -88,24 +87,28 @@ int main(){
 
         key_close_window(window);
 
-        // shader program to use
-        glUseProgram(linked_shader);
-
-        // bg color 
+        // Clear background with color 
         glClearColor(0.2f, .25, .4, 1.);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // change state of how polygons are rasterized
+        // Activate shader
+        glUseProgram(shader_program);
+
+        // Set how polygons are rasterized
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         
         // Triangle 1
         glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // Triangle 2
         glBindVertexArray(VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        // Time varies color via uniform variable
+        time_vary_color(shader_program);
+
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         #ifdef IMGUI_TRUE
         // Imgui
@@ -118,7 +121,7 @@ int main(){
     }
 
     exit:
-    glDeleteVertexArrays(1, &VAO); glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &VAO); glDeleteBuffers(1, &VBO); glDeleteBuffers(1, &EBO);
     glDeleteVertexArrays(2, VAOs); glDeleteBuffers(2, VBOs);
     glfwTerminate();
     return 0;
