@@ -28,10 +28,6 @@ void imgui_create_frame(){
     const char *title = "Frame Title";
     const char *description = "Heres a text description.";
     imgui_write(title, description);
-
-    // ImGui::Begin("Frame Title");                          
-    // ImGui::Text("Heres a text description.");
-    // ImGui::End();
 }
 
 void imgui_render_frame(){
