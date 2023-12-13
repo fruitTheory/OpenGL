@@ -5,6 +5,7 @@
 #include "config.hpp"
 #include "data.hpp"
 #include "window.hpp"
+#include "texture.hpp"
 
 
 int main(){
@@ -36,12 +37,9 @@ int main(){
     glDeleteShader(v_shader); glDeleteShader(f_shader);
 
     // Buffers - VBO stores verticies in gpu memory 
-    GLuint VAOs[2], VBOs[2];
-    GLuint VAO, VBO, EBO;
+    GLuint VAOs[2], VBOs[2], EBO;
 
     // Generate and store IDs, bind to current context and set state of object  
-    // glGenVertexArrays(1, &VAO);
-    // glGenBuffers(1, &VBO);
     // glGenBuffers(1, &EBO);
 
     // Quiz
@@ -89,17 +87,12 @@ int main(){
         glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        // Triangle 2
-        // glBindVertexArray(VAOs[1]);
-        // glDrawArrays(GL_TRIANGLES, 0, 3);
-
         // Time varies color via uniform variable
         time_vary_color(shader_program);
 
         // Offset vertex position via uniform variable
         time_vary_position(shader_program);
 
-        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         #ifdef IMGUI_TRUE
         // Imgui
@@ -112,8 +105,8 @@ int main(){
     }
 
     exit:
-    glDeleteVertexArrays(1, &VAO); glDeleteBuffers(1, &VBO); glDeleteBuffers(1, &EBO);
-    glDeleteVertexArrays(2, VAOs); glDeleteBuffers(2, VBOs);
+    // glDeleteVertexArrays(1, &VAO); glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(2, VAOs); glDeleteBuffers(2, VBOs); glDeleteBuffers(1, &EBO);
     glfwTerminate();
     return 0;
 

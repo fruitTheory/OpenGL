@@ -4,7 +4,6 @@
 #include "GLFW/glfw3.h"
 #include <iostream>
 
-
 // Print versions of tools related openGL 
 void print_tool_versions(){
     // Output OpenGL version

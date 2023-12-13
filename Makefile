@@ -1,7 +1,8 @@
 INCLUDES ?= -I ./include/ \
 -I C:/Programs/glfw/include/ \
 -I C:/Programs/glad/include/ \
--I ./imgui/
+-I ./imgui/ \
+ -I ./include/stb/
 BUILD = ./build/
 SOURCES = ./src/
 BINARIES = ./bin/

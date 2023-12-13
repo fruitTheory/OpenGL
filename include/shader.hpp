@@ -84,7 +84,6 @@ GLuint create_shader_program(GLint v_shader, GLint f_shader){
 // Temporary time varies color for explicit uniform variable
 void time_vary_color(GLint shader_program){
         int uniform_var_loc = glGetUniformLocation(shader_program, "uniColor");
-        // Time to color via uniform
         float time = glfwGetTime();
         float green = (sin(time) / 2.0f) + 0.5f;
         glUniform4f(uniform_var_loc, 0.0f, green, 0.0f, 1.0f);
