@@ -22,3 +22,10 @@ float secondTriangle[] = {
     0.9f, -0.5f, 0.0f,  // right
     0.45f, 0.5f, 0.0f   // top 
 };
+
+float vertices_colors[] = {
+    // positions         // colors
+     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+};    

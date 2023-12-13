@@ -51,9 +51,12 @@ int main(){
 
     glBindVertexArray(VAOs[0]);
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(firstTriangle), &firstTriangle, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float)*3), nullptr);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_colors), &vertices_colors, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float)*6), nullptr);
     glEnableVertexAttribArray(0);
+    // index, size, type, normalize, stride, offset(pointer)
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, (sizeof(float)*6),  (void*)(sizeof(float)*3));
+    glEnableVertexAttribArray(1);
 
     glBindVertexArray(VAOs[1]);
     glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
@@ -61,21 +64,6 @@ int main(){
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float)*3), nullptr);
     glEnableVertexAttribArray(0);
     // End
-
-    // // VAO object (bind)
-    // glBindVertexArray(VAO);
-
-    // // VBO object
-    // glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    // glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-
-    // // EBO object
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
-
-    // // How should gl interpret vertex data, type, stride, etc
-    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float)*3), nullptr);
-    // glEnableVertexAttribArray(0);
 
     // Unbind objects
     glBindVertexArray(0);
@@ -99,14 +87,17 @@ int main(){
         
         // Triangle 1
         glBindVertexArray(VAOs[0]);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         // Triangle 2
-        glBindVertexArray(VAOs[1]);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        // glBindVertexArray(VAOs[1]);
+        // glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // Time varies color via uniform variable
         time_vary_color(shader_program);
+
+        // Offset vertex position via uniform variable
+        time_vary_position(shader_program);
 
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

@@ -89,3 +89,11 @@ void time_vary_color(GLint shader_program){
         float green = (sin(time) / 2.0f) + 0.5f;
         glUniform4f(uniform_var_loc, 0.0f, green, 0.0f, 1.0f);
 }
+
+// Temporary time varies position for explicit uniform variable
+void time_vary_position(GLint shader_program){
+        int uniform_var_loc = glGetUniformLocation(shader_program, "uniOffset");
+        float time = glfwGetTime();
+        float x = (sin(time) / 2.0f); // sin() goes -1, 1
+        glUniform3f(uniform_var_loc, x, 0.0f, 0.0f);
+}
